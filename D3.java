@@ -40,7 +40,6 @@ public class D3 {
                     continue;
                 Point intersection = findIntersection(currentPoint, nextPoint, wires1Points.get(i), wires1Points.get(i + 1));
                 if (intersection != null) {
-                    System.out.println("Intersection at: " + intersection.toString());
                     intersections.add(new Point(intersection));
                     minManhattanDistance = Math.min(minManhattanDistance, Math.abs(intersection.x) + Math.abs(intersection.y));
                 }
@@ -57,12 +56,11 @@ public class D3 {
         for (int i = 0; i < wires1Points.size() - 1; i++) {
             Line2D wire1 = new Line2D.Double(wires1Points.get(i), wires1Points.get(i + 1));
             for (Point intersection : intersections) {
-                if (wire1.ptLineDist(intersection) == 0.0) {
-                    System.out.println(intersection.toString() + " is on " + wire1.getP1().toString() + ":" + wire1.getP2().toString());
+                if (wire1.ptSegDistSq(intersection) == 0.0) {
                     int wire2Traversal = 0;
                     for (int j = 0; j < wires2Points.size() - 1; j++) {
                         Line2D wire2 = new Line2D.Double(wires2Points.get(j), wires2Points.get(j + 1));
-                        if (wire2.ptLineDist(intersection) == 0.0) {
+                        if (wire2.ptSegDistSq(intersection) == 0.0) {
                             lowestTravel = (int) Math.min(lowestTravel, wire1Traversal + wires1Points.get(i).distance(intersection) + wire2Traversal + wires2Points.get(j).distance(intersection));
                             break;
                         }
