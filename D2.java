@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 public class D2 {
     static void run() throws IOException {
         File inputFile = new File("src/d2.txt");
-//        File inputFile = new File("src/d2test.txt");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
         String input = bufferedReader.readLine();
         bufferedReader.close();
