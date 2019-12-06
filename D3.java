@@ -50,7 +50,6 @@ public class D3 {
 
         System.out.println("Part 1: " + minManhattanDistance);
 
-        // TODO: Rounding error?
         int lowestTravel = Integer.MAX_VALUE;
         int wire1Traversal = 0;
         for (int i = 0; i < wires1Points.size() - 1; i++) {
