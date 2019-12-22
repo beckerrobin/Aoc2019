@@ -32,8 +32,10 @@ class D9 {
                 inputMap.put(i, dataList[i].toLong())
             }
 
-            val result = opComputer(inputMap, 1)
-            println("Part 1: ${result.second}")
+            val result1 = opComputer(inputMap, 1)
+            println("Part 1: ${result1.second}")
+            val result2 = opComputer(inputMap, 2)
+            println("Part 2: ${result2.second}")
         }
 
         fun getByValue(memory: HashMap<Int, Long>, index: Int): Long {
@@ -66,9 +68,9 @@ class D9 {
         fun opComputer(memory: HashMap<Int, Long>, vararg input: Long, startPos: Int = 0, startRelativeBase: Int = 0): Pair<Pair<Int, Int>, Long> {
             var stepSize: Int
             var inputPos = 0
-
             var relativeBase = startRelativeBase
             var pos = startPos
+
             while (pos < memory.size) {
                 val data = memory[pos]!!
                 var opcode = data.toInt()
