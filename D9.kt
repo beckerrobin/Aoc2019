@@ -39,32 +39,35 @@ class D9 {
         }
 
         fun getByValue(memory: HashMap<Int, Long>, index: Int): Long {
-            return memory[index]!!
+            return memory.getOrDefault(index, 0)
         }
 
         fun getByReference(memory: HashMap<Int, Long>, index: Int): Long {
-            return memory[memory[index]!!.toInt()]!!
+            return memory.getOrDefault(memory[index]!!.toInt(), 0)
         }
 
         fun getByRelativeReference(memory: HashMap<Int, Long>, index: Int, relativeBase: Int): Long {
-            return memory[memory[index]!!.toInt() + relativeBase]!!
+            return memory.getOrDefault(memory[index]!!.toInt() + relativeBase, 0)
         }
 
         fun readValue(memory: HashMap<Int, Long>, index: Int, mode: Int, relativeBase: Int): Long {
-            return when {
-                mode == 1 -> getByValue(memory, index)
-                mode == 2 -> getByRelativeReference(memory, index, relativeBase)
+            return when (mode) {
+                1 -> getByValue(memory, index)
+                2 -> getByRelativeReference(memory, index, relativeBase)
                 else -> getByReference(memory, index)
             }
         }
 
         fun getWritePosition(memory: HashMap<Int, Long>, index: Int, mode: Int, relativeBase: Int): Int {
-            return when {
-                mode == 2 -> getByValue(memory, index).toInt() + relativeBase
+            return when (mode) {
+                2 -> getByValue(memory, index).toInt() + relativeBase
                 else -> getByValue(memory, index).toInt()
             }
         }
 
+        /**
+         * Returns Pair<Pair<Position, RelativeBase>, code 4 result>
+         */
         fun opComputer(memory: HashMap<Int, Long>, vararg input: Long, startPos: Int = 0, startRelativeBase: Int = 0): Pair<Pair<Int, Int>, Long> {
             var stepSize: Int
             var inputPos = 0
@@ -88,7 +91,7 @@ class D9 {
                     }
                 }
 
-//                println("data: $data | opcode: $opcode")
+//                println("pos: $pos | data: $data | opcode: $opcode | modes $modes")
                 when (opcode) {
                     1 -> { // [z] = x + y
                         val val1 = readValue(memory, pos + 1, modes[2], relativeBase)
@@ -115,10 +118,10 @@ class D9 {
                     }
                     4 -> { // output x
                         val value = readValue(memory, pos + 1, modes[2], relativeBase)
-
+//                        println("Output $value from $pos")
                         return Pair(Pair(pos + 2, relativeBase), value)
                     }
-                    5 -> { // if x != 0 then Position = y
+                    5 -> { // if val1 != 0 then Position = y
                         val val1 = readValue(memory, pos + 1, modes[2], relativeBase)
 
                         if (val1 != 0L) {
