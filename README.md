@@ -1,2 +1,2 @@
 # Aoc2019
-Aoc 2019 in Java
+Aoc 2019 in Java and Kotlin
